@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Задачи по астрономии</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google-site-verification" content="Zq253QEGhnMypugAQrK9NXzhzIfAi_HflpKUn989jzk"/>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=cyrillic-ext"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope|Open+Sans"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cedarville+Cursive" rel="stylesheet">
+    {#    <!-- MUI -->#}
+    <link href="https://cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet"
+          type="text/css"/>
+    <script src="https://cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+
+
+    <!-- Compiled and minified CSS -->
+    {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css">#}
+
+    <!-- Compiled and minified JavaScript -->
+    {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>#}
+
+
+    {#    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">#}
+    {#    <script#}
+    {#            src="https://code.jquery.com/jquery-3.1.1.min.js"#}
+    {#            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="#}
+    {#            crossorigin="anonymous"></script>#}
+    {#    <script src="semantic/dist/semantic.min.js"></script>#}
+
+    <!-- W3-shchool -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- Project style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <!-- Down-arrow on title pages -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/arrow.css' %}">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {#    <!-- Metro 4 -->#}
+    {#    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.css">#}
+
+
+    <!-- Font Awesome for icnos -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+          crossorigin="anonymous">
+
+    <!-- MathJax -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'
+            async></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true,
+                webFont: "STIX"
+            }
+        });
+
+
+    </script>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body class="my-style bgimg-1" style="padding-top: 0px">
+
+<!-- Navbar (sit on top) -->
+<nav class="w3-top" style="width:100%;overflow:hidden; z-index: 2">
+    <div class="w3-bar w3-black  w3-card" id="myNavbar">
+        <a href="/" class="w3-bar-item"
+           style="padding: 8px 16px; font-family: 'Gloria Hallelujah', cursive; font-weight: 100; font-size: x-large;  text-decoration: none;">
+            astro-problems
+        </a>
+        <!-- Right-sided navbar links -->
+        <div class="w3-right w3-hide-small w3-hide-medium">
+            {#            <a href="index.html" class="w3-bar-item w3-button w3-padding-16">Главная</a>#}
+            <a href="{% url 'problems:problems_list' 'id' 0 %}"
+               class="w3-bar-item w3-button w3-padding-16"><i class="fab fa-wpexplorer"></i> Задачи</a>
+            <a href="{% url 'problems:authors_list' %}" class="w3-bar-item w3-button w3-padding-16"><i
+                    class="far fa-user"></i> Авторы</a>
+            <a href="{% url 'problems:themes_list' %}"
+               class="w3-bar-item w3-button w3-padding-16"><i
+                    class="far fa-compass"></i> Темы</a>
+            <a href="{% url 'problems:events_list' %}"
+               class="w3-bar-item w3-button w3-padding-16"><i class="fas fa-map-marker-alt"></i>
+                Источники</a>
+            <a href="{% url 'problems:search' %}"
+               class="w3-bar-item w3-button w3-padding-16"><i class="fa fa-search"></i>
+                Поиск</a>
+            {#            <a href="/command" class="w3-bar-item w3-button w3-padding-16"><i class="fas fa-users"></i>#}
+            {#                Наша команда</a>#}
+            {% if request.user.id %}
+                <a href="{% url 'profile' %}"
+                   class="w3-bar-item w3-button w3-padding-16"><b>{{ request.user }}</b></a>
+            {% else %}
+                <a href="{% url 'login' %}" class="w3-bar-item w3-button w3-padding-16"><i
+                        class="fas fa-sign-in-alt"></i>
+                    Войти</a>
+            {% endif %}
+
+        </div>
+        <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+        <a href="javascript:void(0)"
+           class="w3-bar-item w3-button w3-right w3-hide-large" onclick="w3_open()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+</nav>
+
+<!-- Sidebar on small screens when clicking the menu icon -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-large"
+     style="display:none; z-index: 10" id="mySidebar">
+    {% if request.user.id %}
+        <a onclick="w3_close()" href="{% url 'profile' %}"
+           class="w3-bar-item w3-button w3-padding-16"><b>{{ request.user }}</b></a>
+    {% else %}
+        <a onclick="w3_close()" href="{% url 'login' %}"
+           class="w3-bar-item w3-button w3-padding-16"><i
+                class="fas fa-sign-in-alt"></i>
+            Войти</a>
+    {% endif %}
+    <a onclick="w3_close()" href="{% url 'problems:problems_list' 'id' 0 %}"
+       class="w3-bar-item w3-button w3-padding-16"><i class="fab fa-wpexplorer"></i> Задачи</a>
+    <a onclick="w3_close()" href="{% url 'problems:authors_list' %}"
+       class="w3-bar-item w3-button w3-padding-16"><i
+            class="far fa-user"></i> Авторы</a>
+    <a onclick="w3_close()" href="{% url 'problems:themes_list' %}"
+       class="w3-bar-item w3-button w3-padding-16"><i
+            class="far fa-compass"></i> Темы</a>
+    <a onclick="w3_close()" href="{% url 'problems:events_list' %}"
+       class="w3-bar-item w3-button w3-padding-16"><i class="fas fa-map-marker-alt"></i>
+        Источники</a>
+    <a onclick="w3_close()" href="{% url 'problems:search' %}"
+       class="w3-bar-item w3-button w3-padding-16"><i class="fa fa-search"></i>
+        Поиск</a>
+    <a href="javascript:void(0)" onclick="w3_close()"
+       class="w3-bar-item w3-button w3-padding-16"><i class="fas fa-times"></i> Закрыть</a>
+</nav>
+
+
+{% block content %}
+
+{% endblock %}
+
+
+<!-- Footer -->
+{#<div style="width: 100%; height: 8vh; z-index: -1;"></div>#}
+<footer class="w3-center w3-normal w3-black "
+        style="width: 100%; z-index: 2; padding: 8px 0 8px 0;">
+    <p class="w3-opacity" style="margin: 0">&copy;Астрономический кружок им Е.П. Левитана, 2018&nbsp;&ndash;&nbsp;&infin; </p>
+</footer>
+
+<script>
+    // Modal Image Gallery
+    function onClick(element) {
+        document.getElementById("img01").src = element.src;
+        document.getElementById("modal01").style.display = "block";
+        var captionText = document.getElementById("caption");
+        captionText.innerHTML = element.alt;
+    }
+
+
+    // Toggle between showing and hiding the sidebar when clicking the menu icon
+    var mySidebar = document.getElementById("mySidebar");
+
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+        } else {
+            mySidebar.style.display = 'block';
+        }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+    }
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- Header with full-height image -->
+    <style>
+        @keyframes jump {
+            0% {
+                top: 0;
+            }
+            50% {
+                top: 50px;
+            }
+            100% {
+                top: 0;
+            }
+        }
+
+        #arrow-down {
+            position: relative;
+            padding-top: calc(85vh - 59px);
+            margin: 0 auto;
+            text-align: center;
+            animation: jump 5s infinite;
+        }
+    </style>
+
+    <header class="w3-display-container" id="home"
+            style="width: 100vw; height: calc(100vh); z-index: 1">
+        <div class="w3-display-left w3-text-white" style="padding: 0 0 0px 48px">
+            <span class="w3-jumbo w3-hide-small">Решай задачи с нами</span><br>
+            <span class="w3-xxlarge w3-hide-large w3-hide-medium">Решай задачи с нами</span><br>
+            <span class="w3-xlarge">Это проще, чем кажется.</span>
+            {#            <p><a href="#about"#}
+            {#                  class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Далее</a>#}
+            {#            </p>#}
+        </div>
+        <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+            <a href="https://vk.com/astroolympiads"><i class="fab fa-vk w3-hover-opacity"></i></a>
+            <i class="fas fa-globe w3-hover-opacity"></i>
+        </div>
+        <div id="arrow-down">
+            <i class="fa fa-chevron-down w3-opacity"
+               style="font-size: 80px; color: #eeeeee"></i>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <div class="w3-container gradient-bg" style="padding:128px 16px; color: white" id="about">
+        <p class="w3-center w3-xxlarge my-font">Почему здесь стоит задержаться</p>
+{#        <p class="w3-center w3-large">Хотим представить вам действительно мощный функционал</p>#}
+        <div class="w3-row-padding w3-center" style="margin-top:64px">
+            <div class="w3-col l3 m6 s12" style="padding: 16px">
+                <i class="fab fa-wpexplorer w3-margin-bottom w3-jumbo w3-center"></i>
+                <p class="w3-xlarge"><b>Задачи</b></p>
+                <p>На нашем сайте собраны или по крайней мере будут собраны все актуальные на данный
+                    момент задачи по олимпиадной астрономии.</p>
+            </div>
+            <div class="w3-col l3 m6 s12" style="padding: 16px">
+                <i class="far fa-user w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-xlarge"><b>Авторы</b></p>
+                <p>У каждой задачи, как известно, есть автор. На нашем сайте возможно посмотреть все
+                    задачи авторства конкретного человека.</p>
+            </div>
+            <div class="w3-col l3 m6 s12" style="padding: 16px">
+                <i class="far fa-compass w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-xlarge"><b>Темы</b></p>
+                <p>Для всех задач в нашей базе указаны связанные с ней разделы астрономии. Конечно,
+                    всего в несколько касаний можно получить подборку задач по интересующией вас
+                    теме.</p>
+            </div>
+            <div class="w3-col l3 m6 s12" style="padding: 16px">
+                <i class="fa fa-search w3-margin-bottom w3-jumbo"></i>
+                <p class="w3-xlarge"><b>Поиск</b></p>
+                <p>И, конечно, мы реализовали поиск задач по словам из условия или решения. Более
+                    того, зарегистрированные пользователи могут сами добавлять задачи в базу.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    {% load static %}
+    <div class="w3-container w3-hide-medium w3-hide-small" style="padding:128px 16px" id="team">
+        <p class="w3-center w3-xxlarge" style="color: #eeeeee">НАША КОМАНДА</p>
+        <div class="w3-row-padding w3-center" style="margin-top:64px">
+            <div class="w3-col l2"><p></p></div>
+            <div class="w3-col l4 w3-margin-bottom">
+                <div class="w3-card w3-light-gray">
+                    <img class="" src="{% static 'img/ashepelev.jpg' %}"
+                         style="width:100%">
+                    <div class="w3-container" style="padding-top: 16px">
+                        <p class="w3-large">Алексей Шепелев</p>
+                        {#                        <p class="w3-opacity">CEO & Founder</p>#}
+                        <p class="w3-small">
+                            Троекратный победитель финала всероссийской олимпиады школьников по
+                            астрономии. Дважды серебряный призер международной астрономической
+                            олимпиады. Студент ФИВТ МФТИ.
+                        </p>
+                        <p>
+                            <a href="https://vk.com/alexeyshepelevv" style="text-decoration: none"
+                               target="_blank">
+                                <button class="w3-button w3-light-grey w3-block">
+                                    <i class="fab fa-vk"></i>
+                                </button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l4 m8 w3-margin-bottom">
+                <div class="w3-card w3-light-gray">
+                    <img class="" src="{% static 'img/ddolgov.jpg' %}" style="width:100%">
+                    <div class="w3-container" style="padding-top: 16px">
+                        <p class="w3-large">Долгов Даниил</p>
+                        {#                        <p class="w3-opacity">Art Director</p>#}
+                        <p class="w3-small">Троекратный победитель финала всероссийской олимпиады
+                            школьников по
+                            астрономии. Обладатель трёх золотых медалей международной олимпиады по
+                            астрономии и астрофизике. Студент ФИВТ МФТИ.</p>
+                        <p>
+                            <a href="https://vk.com/eeedadol" style="text-decoration: none"
+                               target="_blank">
+                                <button class="w3-button w3-light-grey w3-block">
+                                    <i class="fab fa-vk"></i>
+                                </button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-container w3-hide-large" style="padding:128px 16px" id="team">
+        <p class="w3-center w3-xxlarge" style="color: #eeeeee">НАША КОМАНДА</p>
+        <div class="w3-row-padding w3-center" style="margin-top:64px">
+            <div class="w3-row-padding">
+                <div class="w3-col m2 w3-hide-small"><p></p></div>
+                <div class="w3-col m8 s12 w3-margin-bottom">
+                    <div class="w3-card w3-light-gray">
+                        <img class="" src="{% static 'img/ashepelev.jpg' %}"
+                             style="width:100%">
+                        <div class="w3-container" style="padding-top: 16px">
+                            <p class="w3-large">Алексей Шепелев</p>
+                            {#                        <p class="w3-opacity">CEO & Founder</p>#}
+                            <p class="w3-small">
+                                Троекратный победитель финала всероссийской олимпиады школьников по
+                                астрономии. Дважды серебряный призер международной астрономической
+                                олимпиады. Студент ФИВТ МФТИ.
+                            </p>
+                            <p>
+                                <a href="https://vk.com/alexeyshepelevv"
+                                   style="text-decoration: none"
+                                   target="_blank">
+                                    <button class="w3-button w3-light-grey w3-block">
+                                        <i class="fab fa-vk"></i>
+                                    </button>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col m2 w3-hide-small"><p></p></div>
+                <div class="w3-col m8 s12 w3-margin-bottom">
+                    <div class="w3-card w3-light-gray">
+                        <img class="" src="{% static 'img/ddolgov.jpg' %}" style="width:100%">
+                        <div class="w3-container" style="padding-top: 16px">
+                            <p class="w3-large">Долгов Даниил</p>
+                            {#                        <p class="w3-opacity">Art Director</p>#}
+                            <p class="w3-small">Троекратный победитель финала всероссийской
+                                олимпиады школьников по
+                                астрономии. Обладатель трёх золотых медалей международной олимпиады
+                                по
+                                астрономии и астрофизике. Студент ФИВТ МФТИ.</p>
+                            <p>
+                                <a href="https://vk.com/eeedadol" style="text-decoration: none"
+                                   target="_blank">
+                                    <button class="w3-button w3-light-grey w3-block">
+                                        <i class="fab fa-vk"></i>
+                                    </button>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promo Section "Statistics" -->
+    <div class="w3-container w3-center gradient-bg" style="color: white">
+        <div class="w3-row w3-padding-64">
+            <div class="w3-col l6 m6 s6">
+                <span class="w3-xxlarge">{{ problem_count }}</span>
+                <br>Задач{{ problem_end }} по астрономии
+            </div>
+            <div class="w3-col l6 m6 s6">
+                <span class="w3-xxlarge">{{ event_count }}</span>
+                <br>Источник{{ event_end }} задач
+            </div>
+        </div>
+        <div class="w3-row w3-padding-64">
+            <div class="w3-col l6 m6 s6">
+                <span class="w3-xxlarge">{{ author_count }}</span>
+                <br>Автор{{ author_end }} задач
+            </div>
+            <div class="w3-col l6 m6 s6">
+                <span class="w3-xxlarge">{{ theme_count }}</span>
+                <br>Раздел{{ theme_end }} астрономии
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal for full size images on click-->
+    <div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+    <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright"
+          title="Close Modal Image">×</span>
+        <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+            <img id="img01" class="w3-image">
+            <p id="caption" class="w3-opacity w3-large"></p>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    {#    <div class="w3-container w3-padding-32 gradient-bg" id="contact">#}
+    {#        <p class="w3-center w3-large">Давайте быть на связи </p>#}
+    {#        <div class="w3-margin16 w3-center">#}
+    {#            <p>#}
+    {#                <i class="far fa-envelope-open w3-margin-right-8"></i>#}
+    {#                <a href="mailto:shepelev.as@phystech.edu">shepelev.as@phystech.edu,</a>#}
+    {#                <a href="mailto:dolgov.da@phystech.edu">dolgov.da@phystech.edu</a>#}
+    {#            </p>#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
+
+{% endblock %}

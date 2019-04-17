@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+
+    <link href="{% static 'problems/css/polyfill.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/input.css' %}" rel="stylesheet" type="text/css">
+
+     <script type='text/javascript'>
+
+        function AutoGrowTextArea(textField) {
+            if (textField.clientHeight < textField.scrollHeight) {
+                textField.style.height = textField.scrollHeight + "px";
+                if (textField.clientHeight < textField.scrollHeight) {
+                    textField.style.height =
+                        (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+                }
+            }
+        }
+
+        function Collapse(textField) {
+            textField.style.height = "100px";
+        }
+    </script>
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg">
+        <div class="w3-col l2 m1 "><p></p></div>
+        <div class="w3-col l3 m3 w3-hide-small form-pano" style="height: 1500px;"><p></p></div>
+        <div class="w3-col l5 m7 s12 w3-light-gray" style="height: 1500px; padding: 16px">
+            <p class="w3-xxlarge">Новая задача</p>
+            <form method="POST" class="mui-form"> {% csrf_token %}
+                <div class="w3-padding-16">
+                    <label class="input-title">НАЗВАНИЕ ЗАДАЧИ</label>
+                    <input type="text" name="title" placeholder="Антипланеты">
+                </div>
+
+                <div class="w3-padding-16">
+                    <label class="input-title">УСЛОВИЕ</label><br>
+                    <textarea name="text" rows="1" onkeyup="AutoGrowTextArea(this)"
+                              onblur="Collapse(this)"
+                              placeholder="Введите условие задачи, используя синтаксиc $\LaTeX$"
+                              onfocus="$.fn.autoResize(this)"></textarea>
+                </div>
+
+                <div class="w3-padding-16">
+                    <label class="input-title">РЕШЕНИЕ</label>
+                    <textarea class="autoExpand" rows="1" name="solution"
+                              onkeyup="AutoGrowTextArea(this)" onblur="Collapse(this)"
+                              placeholder="Введите решение задачи, используя синтаксиc $\LaTeX$"></textarea>
+                </div>
+
+                {#                <p class="input-title">ТЕМЫ</p>#}
+                <div class="w3-padding-16">
+                    <label class="input-title">ТЕМЫ</label>
+                    <table class="w3-table w3-bordered w3-hoverable">
+                        {% for theme in theme_list %}
+                            <tr>
+                                <th style="font-weight: normal"> {{ theme.name }} </th>
+                                <th>
+                                    <input type="checkbox" name="theme_{{ theme.id }}"
+                                           value="{{ theme.name }}">
+                                    <span class="checkmark"></span>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="w3-padding-16">
+                    <label class="input-title">Год</label><br>
+                    <select name="year">
+                        {% for year in years %}
+                            <option value="{{ year }}"> {{ year }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="w3-padding-16">
+                    <label class="input-title">Сложность</label><br>
+                    <select name="complexity">
+                        {% for value in complexity %}
+                            <option value="{{ value }}"> {{ value }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="w3-padding-16">
+                    <label class="input-title">Класс</label>
+                    <div class="w3-row">
+                        <div class="w3-col l1 m1 s1 w3-padding-8">от</div>
+                        <div class="w3-col l5 m5 s5">
+                            <select name="min_level">
+                                <option value="1"> 1</option>
+                                <option value="2"> 2</option>
+                                <option value="3"> 3</option>
+                                <option value="4"> 4</option>
+                                <option value="5"> 5</option>
+                                <option value="6"> 6</option>
+                                <option value="7"> 7</option>
+                                <option value="8"> 8</option>
+                                <option value="9"> 9</option>
+                                <option value="10"> 10</option>
+                                <option value="11"> 11</option>
+                            </select>
+                        </div>
+                        <div class="w3-col l1 m1 s1 w3-padding-8">до</div>
+                        <div class="w3-col l5 m5 s5">
+                            <select name="max_level">
+                                <option value="1"> 1</option>
+                                <option value="2"> 2</option>
+                                <option value="3"> 3</option>
+                                <option value="4"> 4</option>
+                                <option value="5"> 5</option>
+                                <option value="6"> 6</option>
+                                <option value="7"> 7</option>
+                                <option value="8"> 8</option>
+                                <option value="9"> 9</option>
+                                <option value="10"> 10</option>
+                                <option value="11"> 11</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-padding-16 main">
+                    <div style="display: flex">
+                        <label class="input-title" style="flex-grow: 0">Источники</label>
+                        <div style="flex-grow: 10"></div>
+                        <button class="w3-small w3-light-gray"
+                                onclick="AddItem('event')"
+                                style="border: none; flex-grow: 0; padding: 0" type="button"><i
+                                class="fas fa-plus"></i></button>
+                    </div>
+                    <div id="event_list">
+                        <input type="text" name="event_name0" list="event_list0" id="event_name0">
+                        <datalist id="event_list0">
+                            {% for event in events %}
+                                <option value="{{ event.name }}">{{ event.name }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                </div>
+                <div class="w3-padding-16">
+                    <div style="display: flex">
+                        <label class="input-title" style="flex-grow: 0">Авторы</label>
+                        <div style="flex-grow: 10"></div>
+                        <button class="w3-small w3-light-gray"
+                                onclick="AddItem('author')"
+                                style="border: none; flex-grow: 0; padding: 0" type="button"><i
+                                class="fas fa-plus"></i></button>
+                    </div>
+                    <div id="author_list">
+                        <input type="text" name="author_name0" list="author_list0"
+                               id="author_name0">
+                        <datalist id="author_list0">
+                            {% for author in authors %}
+                                <option value="{{ author.name }}">{{ author.name }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+                <div class="w3-padding-16">
+                    <button class="w3-button w3-black w3-hover-gray" type="submit">
+                        Отправить
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        <div class="w3-col l2 m1"><p></p></div>
+    </div>
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh); z-index: 2"></div>
+
+
+    <script>
+        (function () {
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i];
+                input.onchange = function (evt) {
+                    var elem = evt ? evt.target : window.event.srcElement;
+                };
+            }
+        }());
+    </script>
+    <script src="{% static 'problems/js/datalist.polyfill.min.js' %}"></script>
+    <script>
+        var count_event = 1;
+        var count_author = 1;
+        var count = 0;
+
+        function AddItem(id) {
+            if (id === 'event') {
+                count = count_event;
+                ++count_event;
+            } else {
+                count = count_author;
+                ++count_author;
+            }
+            var list_id = id + '_list0';
+            var input_id = id + '_name' + count;
+            var prev_id = id + '_name' + (count - 1);
+            id = id + '_list';
+            document.getElementById(prev_id).style.borderBottom = "1px solid lightgray";
+            count += 1;
+            {#document.getElementById(id).innerHTML += '<input type="text" name="' + input_id + '" list="' + list_id + '" id="' + input_id + '">\n' +#}
+            {#    '                        <datalist id="' + list_id + '">\n' +#}
+            {#    '                            {% for author in authors %}\n'+#}
+            {#        '                                <option value="{{ author.name }}">{{ author.name }}</option>\n'#}
+            {#        +#}
+            {#        '                            {% endfor %}\n' +#}
+            {#    '                        </datalist>'#}
+            document.getElementById(id).innerHTML += '<input type="text" name="' + input_id + '" list="' + list_id + '" id="' + input_id + '">';
+        }
+    </script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

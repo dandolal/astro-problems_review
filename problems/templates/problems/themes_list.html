@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load problems_extras %}
+    {% load static %}
+
+    <link href="{% static 'problems/css/polyfill.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/input.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/table.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/arrow.css' %}" rel="stylesheet" type="text/css">
+
+    <header class="bgimg-1 w3-display-container" id="home"
+            style="width: 100vw; height: 100vh; z-index: 1">
+        <div class="w3-display-left w3-text-white" style="padding: 0 0 0px 48px">
+            <span class="w3-jumbo w3-hide-small"> Темы </span><br>
+            <span class="w3-xxlarge w3-hide-large w3-hide-medium">Темы</span><br>
+            <span class="w3-xlarge">Предмет, основное содержание рассуждения, изложения,творчества</span>
+            {#            <p>#}
+            {#                <button class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">#}
+            {#                    Далее#}
+            {#                </button>#}
+            {#            </p>#}
+        </div>
+        <div id="arrow-down" style="z-index: -1">
+            <i class="fa fa-chevron-down w3-opacity"
+               style="font-size: 80px; color: #eeeeee"></i>
+        </div>
+    </header>
+
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh); "></div>
+    <div class="w3-row gradient-bg" style="min-height: calc(100vh - 59px - 5vh); padding: 0 0 5vh 0">
+        <div class="w3-col l2 m1"><p></p></div>
+        <div class="w3-col l8 m10">
+            <div class="w3-light-gray " style="padding: 64px">
+                <div class="w3-row w3-padding-8 table-row">
+                    <div class="w3-col l9 m9 s9 input-title">
+                        Тема
+                    </div>
+                    <div class="w3-col l3 m3 s3 input-title" style="text-align: center">
+                        #Задач
+                    </div>
+                </div>
+
+                {% for theme in themes_list %}
+                    <a href="{% url 'problems:theme_view' theme.id %}">
+                        <div class="w3-row w3-padding-8 table-row">
+                            <div class="w3-col l9 m9 s9">
+                                {{ theme.name }}
+                            </div>
+                            <div class="w3-col l3 m3 s3" style="text-align: center">
+                                {{ problem_count|get_at_index:forloop.counter0 }}
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="w3-col l2 m1"><p></p></div>
+    </div>
+{% endblock %}

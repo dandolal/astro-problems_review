@@ -1,0 +1,50 @@
+.my-style {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body, html {
+    height: 100%;
+}
+
+/* Full height image header */
+.bgimg-1 {
+    line-height: 1.5;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url("/static/img/background-index.jpg");
+}
+
+.w3-bar .w3-button {
+    padding: 16px;
+}
+
+.slider-wrapper input {
+    width: 150px;
+    height: 20px;
+    margin: 0;
+    transform-origin: 75px 75px;
+    transform: rotate(-90deg);
+}
+
+.gradient-bg {
+    background-image: linear-gradient(to right, #c31432, #240b36);
+}
+
+.arrow-down {
+    position: relative;
+    padding-top: 85vh;
+    margin: 0 auto;
+    text-align: center;
+    animation: jump 5s infinite;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+
+
+
+

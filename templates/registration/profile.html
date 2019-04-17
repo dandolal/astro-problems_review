@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg">
+        <div class="w3-col l2 m1"><p></p></div>
+        <div class="w3-col l8 m10" style="min-height: 100vh">
+            <div class="w3-light-gray" style="padding: 32px">
+                <p class="w3-xxlarge">{{ user.username }}</p>
+                <a href="{% url 'signout' %}" class="w3-button w3-black w3-hover-gray">
+                    Выйти
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="w3-col l2 m1"><p></p></div>
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh); z-index: 2"></div>
+
+{% endblock %}

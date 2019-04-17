@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .lefting{
+            float:left;
+            margin: 7px 7px 7px 0;
+        }
+    </style>
+
+    <div class="w3-container" style="padding-top: 128px">
+        <div class="w3-col l1"><p>&nbsp;</p></div>
+        <div class="w3-col l10 m12 w3-card w3-light-gray" style="padding: 64px">
+            <div class="w3-center w3-xxlarge" style="margin-top: 16px">
+                {{ event.name }}
+            </div>
+            <div>
+                <p align="justify">
+                    <img src="http://mos.olimpiada.ru/images/logo.png" class="lefting"> {{ description }}
+                </p>
+            </div>
+            <form method="POST"> {% csrf_token %}
+                <button type="submit" id="show_problems">Показать задачи</button>
+            </form>
+        </div>
+        <div class="w3-col l1"><p></p></div>
+    </div>
+{% endblock %}

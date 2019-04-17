@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+
+    <style>
+        label {
+            font-weight: bold;
+            color: black;
+            font-size: smaller;
+            text-transform: uppercase;
+        }
+
+        button {
+            padding: 12px;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #999999;
+            color: black;
+        }
+    </style>
+
+    <link href="{% static 'problems/css/polyfill.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/input.css' %}" rel="stylesheet" type="text/css">
+
+    <script type='text/javascript'>
+
+        function AutoGrowTextArea(textField) {
+            if (textField.clientHeight < textField.scrollHeight) {
+                textField.style.height = textField.scrollHeight + "px";
+                if (textField.clientHeight < textField.scrollHeight) {
+                    textField.style.height =
+                        (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+                }
+            }
+        }
+
+        function Collapse(textField) {
+            textField.style.height = "100px";
+        }
+    </script>
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg" style="min-height: 100vh">
+        <div class="w3-col l2 m1"><p></p></div>
+        <div class="w3-col l2 m2 w3-hide-small form-pano" style="height: 700px;"><p></p></div>
+        <div class="w3-col l6 m8 w3-light-gray" style="height: 700px; padding: 16px">
+            <p class="w3-xxlarge">Регистрация</p>
+            <form method="POST" class="mui-form"> {% csrf_token %}
+                {% csrf_token %}
+                {{ form.as_p }}
+                <a href="{% url 'index' %}">
+                    <button type="submit">Зарегистрироваться</button>
+                </a>
+            </form>
+        </div>
+        <div class="w3-col l2 m1"><p></p></div>
+    </div>
+    <div class="w3-row gradient-bg" style="height: 59px; z-index: 2"></div>
+{% endblock %}

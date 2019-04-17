@@ -1,0 +1,109 @@
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{#    <div class="w3-container" style="padding:128px 16px" id="team">#}
+{#        <div style="text-align: center; margin: 64px">#}
+{#            <button class="w3-button w3-light-gray w3-padding-16  w3-xxlarge w3-card"#}
+{#                    onclick="Unhide('login')" style="width: 50vw;">#}
+{#                ВОЙТИ#}
+{#            </button>#}
+{#        </div>#}
+{#        <div class="w3-row-padding w3-center" style="margin-top:32px; display: none;" id="login">#}
+{#            <div class="w3-col l3 m2"><p></p></div>#}
+{#            <div class="w3-col l6 m8">#}
+{#                <div class="w3-card w3-light-gray w3-padding-32">#}
+{#                    <form method="post">#}
+{#                        {% csrf_token %}#}
+{#                        {{ form.as_p }}#}
+{#                        <button type="submit">Login</button>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="w3-col l3 m2"><p></p></div>#}
+{#        </div>#}
+{#        <div style="text-align: center; margin: 64px">#}
+{#            <a href="{% url 'signup' %}">#}
+{#                <button class="w3-button w3-light-gray w3-padding-16  w3-xxlarge w3-card"#}
+{#                        style="width: 50vw;">#}
+{#                    ЗАРЕГИСТРИРОВАТЬСЯ#}
+{#                </button>#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+{#    <script>#}
+{#        function Unhide(id) {#}
+{#            var x = document.getElementById(id);#}
+{#            if (x.style.display === "none") {#}
+{#                x.style.display = "block";#}
+{#            } else {#}
+{#                x.style.display = "none";#}
+{#            }#}
+{#        }#}
+{#    </script>#}
+{#{% endblock %}#}
+
+
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+
+    <style>
+        label {
+            font-weight: bold;
+            color: black;
+            font-size: smaller;
+            text-transform: uppercase;
+        }
+
+        button {
+            padding: 12px;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #999999;
+            color: black;
+        }
+    </style>
+
+    <link href="{% static 'problems/css/polyfill.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/input.css' %}" rel="stylesheet" type="text/css">
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg" style="min-height: 100vh">
+        <div class="w3-col l2 m1"><p></p></div>
+        <div class="w3-col l2 m2 w3-hide-small form-pano" style="height: 650px;"><p></p>
+        </div>
+        <div class="w3-col l6 m8 w3-light-gray" style="height: 650px; padding: 16px">
+            <p class="w3-xxlarge">Войти</p>
+            <form id="login" method="post" style="margin-bottom: 16px;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="w3-center" style="display: flex">
+                    <button type="submit" style="margin-top: 16px; flex-grow: 1">Войти</button>
+                </div>
+            </form>
+            <a href="{% url 'signup' %}">
+                <div class="w3-center w3-small">
+                    <b>Зарегистрироваться</b>
+                </div>
+            </a>
+        </div>
+        <div class="w3-col l2 m1"><p></p></div>
+    </div>
+    <div class="w3-row gradient-bg" style="height: 59px; z-index: 2"></div>
+
+    <script>
+        function Unhide(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+{% endblock %}

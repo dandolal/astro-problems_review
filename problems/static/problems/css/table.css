@@ -1,0 +1,7 @@
+.table-row {
+    border-bottom: lightgray solid 1px;
+}
+
+.table-row:hover {
+    background: lightgray;
+}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- Header with full-height image -->
+    <header class="bgimg-1 w3-display-container" id="home" style="width: 100vw; height: 100vh">
+        <div class="w3-display-left w3-text-white" style="padding:48px">
+            <span class="w3-jumbo w3-hide-small">Решай задачи с нами</span><br>
+            <span class="w3-xxlarge w3-hide-large w3-hide-medium">Решай задачи с нами</span><br>
+            <span class="w3-xlarge">Это проще, чем кажется.</span>
+            <p><a href="#about"
+                  class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Далее</a>
+            </p>
+        </div>
+        <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+            <i class="fab fa-vk w3-hover-opacity"></i>
+            <i class="fas fa-globe w3-hover-opacity"></i>
+        </div>
+
+        <div class="arrow-down w3-display-bottom w3-opacity"></div>
+    </header>
+
+    <!-- Team Section -->
+    {% load static %}
+    <div class="w3-container w3-light-grey" style="padding:128px 16px" id="team">
+        <p class="w3-center w3-xxlarge">НАША КОМАНДА</p>
+        {#    <p class="w3-center w3-large">Это мы</p>#}
+        <div class="w3-row-padding w3-center" style="margin-top:64px">
+            <div class="w3-col l2 m2"><p></p></div>
+            <div class="w3-col l4 m8 w3-margin-bottom">
+                <div class="w3-card">
+                    <img class="" src="{% static 'problems/img/ashepelev.jpg' %}"
+                         style="width:100%">
+                    <div class="w3-container">
+                        <p class="w3-large">Алексей Шепелев</p>
+                        <p class="w3-opacity">CEO & Founder</p>
+                        <p>
+                            Троекратный победитель финала всероссийской олимпиады школьников по
+                            астрономии. Дважды серебряный призер международной астрономической
+                            олимпиады. <br> Студент ФИВТ МФТИ.
+                        </p>
+                        <p>
+                            <a href="https://vk.com/alexeyshepelevv" style="text-decoration: none"
+                               target="_blank">
+                                <button class="w3-button w3-light-grey w3-block"><i
+                                        class="fa fa-envelope"></i> Contact
+                                </button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l4 m6 w3-margin-bottom">
+                <div class="w3-card">
+                    <img class="" src="{% static 'problems/img/ddolgov.jpg' %}" style="width:100%">
+                    <div class="w3-container">
+                        <p class="w3-large">Долгов Даниил</p>
+                        <p class="w3-opacity">Art Director</p>
+                        <p>Троекратный победитель финала всероссийской олимпиады школьников по
+                            астрономии. Обладатель трёх золотых медалей международной олимпиады по
+                            астрономии и астрофизике. <br> Студент ФИВТ МФТИ.</p>
+                        <p>
+                            <a href="https://vk.com/eeedadol" style="text-decoration: none"
+                               target="_blank">
+                                <button class="w3-button w3-light-grey w3-block"><i
+                                        class="fa fa-envelope"></i> Contact
+                                </button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l2 m2"><p></p></div>
+        </div>
+    </div>
+{% endblock %}

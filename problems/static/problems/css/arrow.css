@@ -1,0 +1,23 @@
+@keyframes jump {
+    0% {
+        top: 0;
+    }
+    50% {
+        top: 50px;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+#arrow-down {
+    position: relative;
+    padding-top: calc(100vh - 59px - 120px);
+    margin: 0 auto;
+    text-align: center;
+    animation: jump 5s infinite;
+}
+
+i:hover {
+    color: #FFAAAA;
+}

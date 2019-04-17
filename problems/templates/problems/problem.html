@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load problems_extras %}
+
+    <style>
+        textarea {
+            border: none;
+            border-bottom: 2px solid gray;
+            width: 100%;
+            height: 100px;
+            background-color: #EEE;
+            resize: none;
+            overflow: hidden;
+            padding: 8px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-bottom: 2px solid black;
+            background-color: #F7F7F7;
+
+        }
+
+        .w3-padding-8 {
+            padding: 8px 0;
+        }
+    </style>
+
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg" style="min-height: calc(100vh - 110px - 125px);">
+        <div class="w3-col l2 m1 s1"><p></p></div>
+        <div class="w3-col l8 m10 s10">
+            <div class="w3-xxlarge" style="color: white; padding: 0 0 32px 0; width: 100%">
+                {% if problem.title %}
+                    Задача &laquo;{{ problem.title }}&raquo;
+                {% else %}
+                    Задача #{{ problem.id }}
+                {% endif %}
+            </div>
+            <div class="w3-light-gray w3-card" style="width: 100%; padding: 32px">
+                <div class="w3-padding-8">
+                    <b>Тематика:</b>
+                    {% for theme in themes %}
+                        {% if not forloop.last %}
+                            {{ theme.name }},
+                        {% else %}
+                            {{ theme.name }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="w3-padding-8">
+                    <b>Авторство:</b>
+                    {% for author in authors %}
+                        <a href="{% url 'problems:view_author' author.id %}">
+                            {% if not forloop.last %}
+                                {{ author.name }},
+                            {% else %}
+                                {{ author.name }}
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="w3-padding-8">
+                    <b>Источники:</b>
+                    {% for event in events %}
+                        {{ event.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="w3-padding-8">
+                    <b>Год:</b>
+                    {{ problem.year }}
+                </div>
+                <div class="w3-padding-8">
+                    <b>Класс:</b>
+                    {{ problem.min_level }}
+                    {% if problem.min_level < problem.max_level %}
+                        &ndash; {{ problem.max_level }}
+                    {% endif %}
+                </div>
+                <div class="w3-padding-8">
+                    <b>Рейтинг:</b>&emsp;
+                    <a href="{% url 'problems:reduce_rating' problem.id %}">
+                        <i class="far fa-arrow-alt-circle-down"></i>
+                    </a>
+                    &ensp;{{ problem.rating }}&ensp;
+                    <a href="{% url 'problems:add_rating' problem.id %}">
+                        <i class="far fa-arrow-alt-circle-up"></i>
+                    </a>
+                </div>
+
+                <div class="w3-padding-8">
+                    {{ problem.text|safe }}
+                </div>
+
+                <div class="w3-padding-8" style="display: flex; flex-wrap: wrap">
+                    {% if problem.solution != '' %}
+                        <div class="w3-padding-8" style="flex-grow: 0; padding-right: 16px;">
+                            <a href="{% url 'problems:view_solution' problem.id %}">
+                                <button class="w3-button w3-black w3-hover-gray">
+                                    Показать решение
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {#                    <div style="flex-grow: 0">#}
+                    {#                        <a href="file:///problems/static/problems/latex/tex_template.tex">#}
+                    {#                            <button class="w3-button w3-black w3-hover-gray">#}
+                    {#                                Скачать в .tex#}
+                    {#                            </button>#}
+                    {#                        </a>#}
+                    {#                    </div>#}
+                    <div style="flex-grow: 1"></div>
+                    {% if user.is_staff %}
+                        <div class="w3-padding-8" style="flex-grow: 0; display: flex">
+                            <div style="padding-right: 16px; flex-grow: 0">
+                                <a href="{% url 'problems:delete_problem' problem.id %}">
+                                    <button class="w3-button w3-black w3-hover-gray">
+                                        Удалить задачу
+                                    </button>
+                                </a>
+                            </div>
+                            <div style="flex-grow: 0">
+                                <a href="{% url 'problems:edit_problem' problem.id %}">
+                                    <button class="w3-button w3-black w3-hover-gray">
+                                        Редактировать задачу
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="w3-col l2 m1 s1"><p></p></div>
+    </div>
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+{% endblock %}

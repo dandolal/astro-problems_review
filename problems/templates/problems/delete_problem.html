@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load problems_extras %}
+
+    <style>
+        textarea {
+            border: none;
+            border-bottom: 2px solid gray;
+            width: 100%;
+            height: 100px;
+            background-color: #EEE;
+            resize: none;
+            overflow: hidden;
+            padding: 8px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-bottom: 2px solid black;
+            background-color: #F7F7F7;
+
+        }
+
+        .w3-padding-8 {
+            padding: 8px 0;
+        }
+    </style>
+
+
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div class="w3-row gradient-bg" style="min-height: calc(90vh - 110px - 100px);">
+        <div class="w3-col l2"><p></p></div>
+        <div class="w3-col l8 m12">
+            <div class="w3-xxlarge" style="color: white; padding: 0 0 32px 0; width: 100%">
+                Удалить задачу?
+            </div>
+            <div class="w3-light-gray w3-card" style="width: 100%; padding: 32px">
+                <form method="POST"> {% csrf_token %}
+                    {{ form }}
+                    <button type="submit"> Подтвердить</button>
+                </form>
+            </div>
+        </div>
+        <div class="w3-col l2"><p></p></div>
+    </div>
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+{% endblock %}

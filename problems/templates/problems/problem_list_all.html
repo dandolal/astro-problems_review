@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+    {% load problems_extras %}
+
+    <link href="{% static 'problems/css/polyfill.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/input.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/table.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'problems/css/arrow.css' %}" rel="stylesheet" type="text/css">
+
+    <header class="w3-display-container" id="home"
+            style="width: 100vw; height: calc(100vh); z-index: 1">
+        <div class="w3-display-left w3-text-white" style="padding: 80px 0 0 48px">
+            <span class="w3-jumbo w3-hide-small"> Задачи </span><br>
+            <span class="w3-xxlarge w3-hide-large w3-hide-medium">Задачи</span><br>
+            <span class="w3-xlarge">Поставленная цель, которую стремятся достигнуть</span>
+            <p>
+
+                {% if user.is_authenticated %}
+                    <a class="w3-inline" href="{% url 'problems:problem_new' %}">
+                        <button class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">
+                            Добавить задачу
+                        </button>
+                    </a>
+                {% else %}
+                    <button style="opacity: 100%;"
+                            class="w3-button w3-padding-large w3-large w3-margin-to">
+                        &nbsp;
+                    </button>
+                {% endif %}
+            </p>
+        </div>
+        <div id="arrow-down" style="z-index: -1">
+            <i class="fa fa-chevron-down w3-opacity"
+               style="font-size: 80px; color: #eeeeee"></i>
+        </div>
+    </header>
+
+    <div class="w3-row gradient-bg" style="height: calc(59px + 5vh);"></div>
+    <div id="content" class="gradient-bg w3-small" style="min-height: calc(100vh - 15vh); padding: 0 5vw;">
+        <div class="w3-container w3-card-4 w3-gray w3-opacity-min"
+             style="padding: 0; ">
+            <a href="{% url 'problems:problems_list' 'id' order %}#content">
+                <div class="w3-col l1 m1 s1 w3-border-top w3-border-left w3-border-bottom w3-padding-8 w3-center">
+                    <b><i class="fab fa-slack-hash"></i></b>&nbsp;
+                    {% if order_by == 'id' and order == 1 %}
+                        <i class="fas fa-sort-amount-up w3-hide-medium w3-hide-small"></i>
+                    {% elif order_by == 'id' and order == 0 %}
+                        <i class="fas fa-sort-amount-down w3-hide-medium w3-hide-small"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'event__name' order %}#content">
+                <div class="w3-col l2 m4 s4 w3-center  w3-border-top w3-border-left w3-border-bottom w3-padding-8">
+                    Источники
+                    {% if order_by == 'event__name' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'event__name' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'year' order %}#content">
+                <div class="w3-col l1 m2 s2 w3-center w3-border-top w3-border-left w3-border-bottom w3-padding-8">
+                    Год&nbsp;
+                    {% if order_by == 'year' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'year' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'theme__name' order %}#content">
+                <div class="w3-col l3 m5 s5 w3-center  w3-border-top w3-border-left w3-border-bottom w3-padding-8">
+                    Темы&nbsp;
+                    {% if order_by == 'theme__name' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'theme__name' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'complexity' order %}#content">
+                <div class="w3-col l1 w3-hide-medium w3-hide-small w3-border-top w3-border-left w3-border-bottom w3-center w3-padding-8">
+                    {{ "Сложность"|cut_string:7 }}&nbsp;
+                    {% if order_by == 'complexity' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'complexity' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'author__name' order %}#content">
+                <div class="w3-col l3 w3-hide-medium w3-hide-small  w3-center w3-border-top w3-border-left w3-border-bottom w3-padding-8">
+                    Авторы&nbsp;
+                    {% if order_by == 'author__name' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'author__name' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+            <a href="{% url 'problems:problems_list' 'rating' order %}#content">
+                <div class="w3-col l1 w3-hide-medium w3-hide-small w3-center w3-border w3-padding-8">
+                    Рейтинг&nbsp;
+                    {% if order_by == 'rating' and order == 1 %}
+                        <i class="fas fa-sort-amount-up"></i>
+                    {% elif order_by == 'rating' and order == 0 %}
+                        <i class="fas fa-sort-amount-down"></i>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+
+        {% if problems %}
+            {% for problem in problems %}
+                <a href="{% url 'problems:problem' problem.id %}">
+                    <div class="w3-container w3-white w3-opacity-min"
+                         style="padding: 0;">
+                        <div class="w3-col l1 m1 s1 w3-border-left w3-border-bottom w3-padding-8 w3-center">
+                            <b>
+                                {{ problem.id }}
+                            </b>
+                        </div>
+
+                        <div class="w3-col l2 m4 s4 w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.event_set.all|authors_to_string:"15" }}
+                        </div>
+                        <div class="w3-col l1 m2 s2 w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.year }}
+                        </div>
+                        <div class="w3-col l3 m5 s5 w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.theme_set.all|authors_to_string:"20" }}
+                        </div>
+                        <div class="w3-col l1 w3-hide-medium w3-hide-small w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.complexity }}
+                        </div>
+                        <div class="w3-col l3 w3-hide-medium w3-hide-small w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.author_set.all|authors_to_string:"45" }}
+                        </div>
+                        <div class="w3-col l1 w3-hide-medium w3-hide-small  w3-border-left w3-border-bottom w3-center w3-padding-8">
+                            {{ problem.rating }}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>No problems are available.</p>
+        {% endif %}
+        <div class="pagination w3-center w3-padding-8 w3-large" style="color: white;">
+        <span class="step-links">
+            <div style="display: inline">
+                {% if problems.has_previous %}
+                    <a href="?page={{ problems.previous_page_number }}#content" class="w3-button"
+                       style="text-decoration: none">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            <span class="current">
+                <b>{{ problems.number }}</b>
+            </span>
+            {% if problems.has_next %}
+                <a href="?page={{ problems.next_page_number }}#content" class="w3-button"
+                   style="text-decoration: none">
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            {% endif %}
+        </span>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,5 @@
+.idea
+.texpadtmp
+__pycache__/
+.DS_Store
+astro_task_store/settings.py
