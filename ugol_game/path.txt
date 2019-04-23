@@ -1,0 +1,45 @@
+/usr/local/bin/python3.7 /Users/ashepelev/PycharmProjects/ugol-game/main.py
+Цель: Тукан
+>> Цефей
+Кассиопея
+[[4, <Constellation.Constellation object at 0x10674c320>], [5, <Constellation.Constellation object at 0x106747470>], [5, <Constellation.Constellation object at 0x1067531d0>], [5, <Constellation.Constellation object at 0x1066a3e10>]]
+>> Персей
+Телец
+[[2, <Constellation.Constellation object at 0x10674cef0>], [3, <Constellation.Constellation object at 0x106747860>], [3, <Constellation.Constellation object at 0x10674c160>], [4, <Constellation.Constellation object at 0x106747fd0>], [4, <Constellation.Constellation object at 0x101b2cb00>], [5, <Constellation.Constellation object at 0x1066abda0>]]
+>> Эридан
+Южная Гидра
+[[0, <Constellation.Constellation object at 0x10674cb00>], [1, <Constellation.Constellation object at 0x10674c080>], [2, <Constellation.Constellation object at 0x10674c860>], [3, <Constellation.Constellation object at 0x1067476a0>], [4, <Constellation.Constellation object at 0x10674cda0>], [4, <Constellation.Constellation object at 0x10674c710>]]
+>> Столовая Гора
+Октант
+[[0, <Constellation.Constellation object at 0x10674cb00>], [1, <Constellation.Constellation object at 0x106747710>], [2, <Constellation.Constellation object at 0x10674c1d0>], [3, <Constellation.Constellation object at 0x10674c400>], [4, <Constellation.Constellation object at 0x10674cbe0>]]
+>> Павлин
+Индеец
+[[0, <Constellation.Constellation object at 0x10674cb00>], [1, <Constellation.Constellation object at 0x1067474e0>], [2, <Constellation.Constellation object at 0x106747e10>], [4, <Constellation.Constellation object at 0x10674c9b0>]]
+>> Микроскоп
+Южная Корона
+!!! Ошибка !!!
+Телескоп
+!!! Ошибка !!!
+Муха
+!!! Ошибка !!!
+Южный Треугольник
+!!! Ошибка !!!
+Журавль
+[[0, <Constellation.Constellation object at 0x10674cb00>], [1, <Constellation.Constellation object at 0x10674cb70>], [2, <Constellation.Constellation object at 0x10674c7f0>], [3, <Constellation.Constellation object at 0x106753080>]]
+>> Скульптор
+Печь
+[[0, <Constellation.Constellation object at 0x10674cb00>], [1, <Constellation.Constellation object at 0x10674cb70>]]
+>> Феникс
+Печь
+!!! Ужe было !!!
+Тукан
+Поздравляю, Вы выиграли!
+
+            --------------
+            |            |
+            | КОНЕЦ ИГРЫ |
+            |            |
+            --------------
+
+
+Process finished with exit code 0

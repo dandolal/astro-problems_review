@@ -7,8 +7,13 @@ from django.core.files import File
 from datetime import datetime
 # from django.db.migrations.operations import TrigamExtention
 
-from .models import Problem, Author, Event, Theme, Comment
+
+
+from .models import Problem, Author, Event, Theme, Comment, Game
 from .forms import ProblemForm, ConfirmDeleteForm, AuthorSearchForm
+from ugol_game.UgolGame import UgolGame
+from ugol_game.ConstellationGraph import CSVtoConstellationGraph
+
 
 MAX_COUNT = 100
 
@@ -394,3 +399,89 @@ def search(request):
             'complexity': [2, 3, 4],
         }
         return render(request, 'problems/search.html', context)
+
+
+def start_game(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            Game.objects.filter(player_id=request.user.id).delete()
+        game_id = create_new_game(request)
+        return redirect('/problems/game/{}'.format(game_id))
+    games = Game.objects.all().filter(player_id=request.user.id)
+    games_num = len(games)
+    context = {'user': request.user, 'number_of_games': games_num}
+    return render(request, 'problems/start_game.html', context)
+
+
+def create_new_game(request):
+    game = UgolGame(CSVtoConstellationGraph('ugol_game/map.csv'))
+    game_ = Game(current_constellation=game.currentConstellation.name,
+                 target_constellation=game.targetConstellation.name,
+                 path=game.currentConstellation)
+    if request.user.is_authenticated:
+        game_.player_id = request.user.id
+    game_.save()
+    return game_.id
+
+
+def get_player_game(request, playerid):
+    games = Game.objects.all().filter(player_id=playerid)
+    if len(games) > 0:
+        return redirect('/problems/game/{}'.format(games[len(games) - 1].id))
+    else:
+        redirect('/problems/start_game')
+
+
+def end_game(request, result):
+    if request.method == 'POST':
+        game_id = create_new_game(request)
+        return redirect('/problems/game/{}'.format(game_id))
+    context = {'result': ':)'}
+    print(result)
+    if result == 2:
+        context['result'] = 'Поздравляю, Вы выиграли!'
+    if result == 0:
+        context['result'] = 'Ура, я выиграл!'
+    if result == 1:
+        context['result'] = 'Тупик. Ничья.'
+    return render(request, 'problems/end_game.html', context)
+
+
+def ugame(request, game_id):
+    game = UgolGame(CSVtoConstellationGraph('ugol_game/map.csv'))
+    game_ = Game.objects.get(pk=game_id)
+    game.currentConstellation = game.get_constellation(game_.current_constellation)
+    game.targetConstellation = game.get_constellation(game_.target_constellation)
+    visited = game_.path.split(',')
+    for constellation in visited:
+        game.make_visited(game.get_constellation(constellation))
+
+    print(game_.path)
+    context = {'target_constellation': game.targetConstellation.name,
+               'current_constellation': game.currentConstellation.name,
+               'error': game_.error}
+    if request.method == 'POST':
+        human_constellation = request.POST.get('human_constellation')
+        game_.error = game.getHumanTurn(human_constellation)
+        game_.save()
+        if game_.error == 'Всё ок!':
+            game_.path += ',{}'.format(human_constellation)
+            result = game.processTurn(game.get_constellation(human_constellation), True)
+            if result == 2 or result == 1:
+                Game.objects.filter(pk=game_id).delete()
+                return redirect('/problems/end_game/{}'.format(result))
+            result = game.processTurn(game.nextAITurn(), False)
+            if result == 0 or result == 1:
+                Game.objects.filter(pk=game_id).delete()
+                return redirect('/problems/end_game/{}'.format(result))
+            game_.path += ',{}'.format(game.currentConstellation.name)
+            game_.current_constellation = game.currentConstellation.name
+            context['current_constellation'] = game.currentConstellation
+            context['target_constellation'] = game.targetConstellation
+            context['error'] = game_.error
+        else:
+            context['error'] = game_.error
+        game_.save()
+        return render(request, 'problems/game.html', context)
+
+    return render(request, 'problems/game.html', context)

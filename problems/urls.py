@@ -30,5 +30,10 @@ urlpatterns = [# ex: /polls/
     path('<int:problem_id>/add_rating/', views.add_rating, name='add_rating'),
     path('<int:problem_id>/reduce_rating/', views.reduce_rating, name='reduce_rating'),
     path('<int:problem_id>/download/', views.download_problem, name='download_problem'),
-    path('search/', views.search, name='search')
+    path('search/', views.search, name='search'),
+
+    path('game/<int:game_id>', views.ugame, name='game'),
+    path('start_game/', views.start_game, name='start_game'),
+    path('end_game/<int:result>', views.end_game, name='end_game'),
+    path('continue_game/<int:playerid>', views.get_player_game, name='continue_game')
 ]

@@ -62,3 +62,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.author.username, str(self.date))
+
+
+class Game(models.Model):
+    player_id = models.IntegerField(default=-1)
+    current_constellation = models.CharField(max_length=50, default='')
+    target_constellation = models.CharField(max_length=50, default='')
+    path = models.TextField(default='')
+    error = models.TextField(default='Всё ок!')
+
+    def __str__(self):
+        return '{}'.format(str(self.id))
