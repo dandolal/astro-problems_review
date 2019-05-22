@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        .lefting {
+            float: left;
+            margin: 7px 7px 7px 0;
+        }
+    </style>
+
+    <div class="w3-container" style="padding-top: 128px">
+        <div class="w3-col l1"><p>&nbsp;</p></div>
+        <div class="w3-col l10 m12 w3-card w3-light-gray" style="padding: 64px">
+            <div class="w3-center w3-xxlarge" style="margin-top: 16px">
+                Игра началась
+            </div>
+            <div class="w3-center w3-xxlarge" style="margin-top: 16px">
+                Цель: {{ target_constellation }}
+            </div>
+            <div class="w3-center w3-xxlarge" style="margin-top: 16px">
+                Положение: {{ current_constellation }}
+            </div>
+            <div class="w3-center w3-xxlarge" style="margin-top: 16px">
+                Ошибка: {{ error }}
+            </div>
+            <form method="POST" class="mui-form"> {% csrf_token %}
+                <div class="w3-padding-16">
+                    <label class="input-title">ВАШ ХОД</label>
+                    <input type="text" name="human_constellation">
+                </div>
+                <div class="w3-padding-16">
+                    <button class="w3-button w3-black w3-hover-gray" type="submit">
+                        Отправить
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="w3-col l1"><p></p></div>
+    </div>
+{% endblock %}

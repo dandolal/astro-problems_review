@@ -5,10 +5,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.files import File
 from datetime import datetime
-# from django.db.migrations.operations import TrigamExtention
 
-from .models import Problem, Author, Event, Theme, Comment
+
+
+from .models import Problem, Author, Event, Theme, Comment, Game
 from .forms import ProblemForm, ConfirmDeleteForm, AuthorSearchForm
+from ugol_game.ugol_game import UgolGame
+from ugol_game.constellation_graph import csv_to_constellation_graph
+
 
 MAX_COUNT = 100
 
@@ -62,12 +66,7 @@ def themes_list(request):
 def theme_view(request, theme_id):
     try:
         theme_ = get_object_or_404(Theme, pk=theme_id)
-        # context = {
-        #     'theme': theme_, 'description': theme_.description, 'problems': theme_.problems
-        # }
-        # if request.method == 'POST':
         return problems_list(request, 'id', 0, theme_.problems, True)
-        # return render(request, 'problems/event.html', context)
     except OperationalError:
         pass
 
@@ -121,12 +120,7 @@ def download_problem(request, problem_id):
 def event(request, event_id):
     try:
         event_ = get_object_or_404(Event, pk=event_id)
-        # context = {
-        #     'event': event_, 'description': event_.description, 'problems': event_.problems
-        # }
-        # if request.method == 'POST':
         return problems_list(request, 'id', 0, event_.problems, True)
-        # return render(request, 'problems/event.html', context)
     except OperationalError:
         pass
 
@@ -228,11 +222,7 @@ def delete_problem(request, problem_id):
 def view_author(request, author_id):
     try:
         author = get_object_or_404(Author, pk=author_id)
-        # problems = author.problems.all()
-        # print(problems)
-        # context = {'author': author}
         return problems_list(request, 'id', 0, author.problems, True)
-        # return render(request, 'problems/author.html', context)
     except OperationalError:
         pass
 
@@ -241,9 +231,6 @@ def events_list(request):
     try:
         events_list_ = Event.objects.annotate(count=Count('problems')).order_by('-count')
         problem_count = [len(event.problems.all()) for event in events_list_]
-        # paginator = Paginator(events_list_, 20)
-        # page = request.GET.get('page')
-        # events = paginator.get_page(page)
         context = {'events': events_list_, 'problem_count': problem_count}
         return render(request, 'problems/events.html', context)
     except OperationalError:
@@ -289,12 +276,6 @@ def edit_problem(request, problem_id):
                     break
 
             authors = request.POST.get('authors')
-            # for author_id in existing_authors:
-            #     try:
-            #         author = Author.objects.get(pk=author_id)
-            #         authors = author.name + ', ' + authors
-            #     except ObjectDoesNotExist:
-            #         pass
 
             for name in authors.split(','):
                 name = name.strip()
@@ -394,3 +375,95 @@ def search(request):
             'complexity': [2, 3, 4],
         }
         return render(request, 'problems/search.html', context)
+
+
+def start_game(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            Game.objects.filter(player_id=request.user.id).delete()
+        game_id = create_new_game(request)
+        return redirect('/problems/game/{}'.format(game_id))
+    games = Game.objects.all().filter(player_id=request.user.id)
+    games_num = len(games)
+    context = {'user': request.user, 'number_of_games': games_num}
+    return render(request, 'problems/start_game.html', context)
+
+
+def create_new_game(request):
+    game = UgolGame(csv_to_constellation_graph('ugol_game/map.csv'))
+    game_ = Game(current_constellation=game.currentConstellation.name,
+                 target_constellation=game.targetConstellation.name,
+                 path=game.currentConstellation)
+    if request.user.is_authenticated:
+        game_.player_id = request.user.id
+    game_.save()
+    return game_.id
+
+
+def get_player_game(request, playerid):
+    games = Game.objects.all().filter(player_id=playerid)
+    if len(games) > 0:
+        return redirect('/problems/game/{}'.format(games[len(games) - 1].id))
+    else:
+        redirect('/problems/start_game')
+
+
+def end_game(request, result):
+    if request.method == 'POST':
+        game_id = create_new_game(request)
+        return redirect('/problems/game/{}'.format(game_id))
+    context = {'result': ':)'}
+    print(result)
+    if result == 2:
+        context['result'] = 'Поздравляю, Вы выиграли!'
+    if result == 0:
+        context['result'] = 'Ура, я выиграл!'
+    if result == 1:
+        context['result'] = 'Тупик. Ничья.'
+    return render(request, 'problems/end_game.html', context)
+
+
+def ugame(request, game_id):
+    game = UgolGame(csv_to_constellation_graph('ugol_game/map.csv'))
+    game_ = Game.objects.get(pk=game_id)
+    game.current_constellation = game.get_constellation(game_.current_constellation)
+    game.target_constellation = game.get_constellation(game_.target_constellation)
+    visited = game_.path.split(',')
+    for constellation in visited:
+        game.make_visited(game.get_constellation(constellation))
+
+    print(game_.path)
+    context = {'target_constellation': game.target_constellation.name,
+               'current_constellation': game.current_constellation.name,
+               'error': game_.error}
+    if request.method == 'POST':
+        human_constellation = request.POST.get('human_constellation')
+        array = human_constellation.split()
+        if len(array) == 1:
+            human_constellation = array[0].capitalize()
+        else:
+            human_constellation = array[0].capitalize() + ' ' + array[1].capitalize()
+        print(human_constellation)
+        game_.error = game.get_human_turn(human_constellation)
+        game_.save()
+        if game_.error == 'Всё ок!':
+            game_.path += ',{}'.format(human_constellation)
+            result = game.process_turn(game.get_constellation(human_constellation), True)
+            if result == 2 or result == 1:
+                Game.objects.filter(pk=game_id).delete()
+                return redirect('/problems/end_game/{}'.format(result))
+            result = game.process_turn(game.next_ai_turn(), False)
+            if result == 0 or result == 1:
+                Game.objects.filter(pk=game_id).delete()
+                return redirect('/problems/end_game/{}'.format(result))
+            game_.path += ',{}'.format(game.current_constellation.name)
+            game_.current_constellation = game.current_constellation.name
+            context['current_constellation'] = game.current_constellation
+            context['target_constellation'] = game.target_constellation
+            context['error'] = game_.error
+        else:
+            context['error'] = game_.error
+        game_.save()
+        return render(request, 'problems/game.html', context)
+
+    return render(request, 'problems/game.html', context)
