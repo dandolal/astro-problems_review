@@ -6,37 +6,37 @@ class Constellation:
         self.name = name
         self.__neighbors = {}
         self.neighborsCount = 0
-        self.baierName = bname
-        self.isVisited = False
-        self.isPossible = True
-        self.isTarget = False
+        self.bayer_name = bname
+        self.is_visited = False
+        self.is_possible = True
+        self.is_target = False
         # for BFS
-        self.BFSMarked = False
-        self.BFSDeepness = 0
-        self.BFSPrevious = None
+        self.bfs_marked = False
+        self.bfs_deepness = 0
+        self.bfs_previous = None
         # for nextTurn
-        self.temporaryVisited = False
+        self.temporary_visited = False
 
     def __str__(self):
         return self.name
 
-    def setNeighbors(self, constellationList):
-        for constellation in constellationList:
+    def set_neighbors(self, constellation_list):
+        for constellation in constellation_list:
             self.__neighbors.update({constellation.name: constellation})
         self.neighborsCount = len(self.__neighbors)
 
-    def getNeighbors(self):
+    def get_neighbors(self):
         return self.__neighbors
 
-    def areAllNeighborsVisited(self):
-        visitedNeighborsCount = 0
-        for neighborConstellation in self.getNeighbors().values():
+    def are_all_neighbors_visited(self):
+        visited_neighbors_count = 0
+        for neighborConstellation in self.get_neighbors().values():
             if neighborConstellation.isVisited:
-                visitedNeighborsCount += 1
-        return visitedNeighborsCount == self.neighborsCount
+                visited_neighbors_count += 1
+        return visited_neighbors_count == self.neighborsCount
 
-    def isPossibleNextTurn(self):
-        return not self.isVisited and not self.temporaryVisited
+    def is_possible_next_turn(self):
+        return not self.is_visited and not self.temporary_visited
 
-    def isPossibleNextBFS(self):
-        return self.isPossibleNextTurn() and not self.BFSMarked
+    def is_possible_next_bfs(self):
+        return self.is_possible_next_turn() and not self.bfs_marked

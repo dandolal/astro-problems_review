@@ -11,8 +11,8 @@ from datetime import datetime
 
 from .models import Problem, Author, Event, Theme, Comment, Game
 from .forms import ProblemForm, ConfirmDeleteForm, AuthorSearchForm
-from ugol_game.UgolGame import UgolGame
-from ugol_game.ConstellationGraph import CSVtoConstellationGraph
+from ugol_game.ugol_game import UgolGame
+from ugol_game.constellation_graph import CSVtoConstellationGraph
 
 
 MAX_COUNT = 100
@@ -448,36 +448,42 @@ def end_game(request, result):
 
 
 def ugame(request, game_id):
-    game = UgolGame(CSVtoConstellationGraph('ugol_game/map.csv'))
+    game = UgolGame(csv_to_constellation_graph('ugol_game/map.csv'))
     game_ = Game.objects.get(pk=game_id)
-    game.currentConstellation = game.get_constellation(game_.current_constellation)
-    game.targetConstellation = game.get_constellation(game_.target_constellation)
+    game.current_constellation = game.get_constellation(game_.current_constellation)
+    game.target_constellation = game.get_constellation(game_.target_constellation)
     visited = game_.path.split(',')
     for constellation in visited:
         game.make_visited(game.get_constellation(constellation))
 
     print(game_.path)
-    context = {'target_constellation': game.targetConstellation.name,
-               'current_constellation': game.currentConstellation.name,
+    context = {'target_constellation': game.target_constellation.name,
+               'current_constellation': game.current_constellation.name,
                'error': game_.error}
     if request.method == 'POST':
         human_constellation = request.POST.get('human_constellation')
-        game_.error = game.getHumanTurn(human_constellation)
+        array = human_constellation.split()
+        if len(array) == 1:
+            human_constellation = array[0].capitalize()
+        else:
+            human_constellation = array[0].capitalize() + ' ' + array[1].capitalize()
+        print(human_constellation)
+        game_.error = game.get_human_turn(human_constellation)
         game_.save()
         if game_.error == 'Всё ок!':
             game_.path += ',{}'.format(human_constellation)
-            result = game.processTurn(game.get_constellation(human_constellation), True)
+            result = game.process_turn(game.get_constellation(human_constellation), True)
             if result == 2 or result == 1:
                 Game.objects.filter(pk=game_id).delete()
                 return redirect('/problems/end_game/{}'.format(result))
-            result = game.processTurn(game.nextAITurn(), False)
+            result = game.process_turn(game.next_ai_turn(), False)
             if result == 0 or result == 1:
                 Game.objects.filter(pk=game_id).delete()
                 return redirect('/problems/end_game/{}'.format(result))
-            game_.path += ',{}'.format(game.currentConstellation.name)
-            game_.current_constellation = game.currentConstellation.name
-            context['current_constellation'] = game.currentConstellation
-            context['target_constellation'] = game.targetConstellation
+            game_.path += ',{}'.format(game.current_constellation.name)
+            game_.current_constellation = game.current_constellation.name
+            context['current_constellation'] = game.current_constellation
+            context['target_constellation'] = game.target_constellation
             context['error'] = game_.error
         else:
             context['error'] = game_.error
