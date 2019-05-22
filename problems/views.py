@@ -5,14 +5,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.files import File
 from datetime import datetime
-# from django.db.migrations.operations import TrigamExtention
 
 
 
 from .models import Problem, Author, Event, Theme, Comment, Game
 from .forms import ProblemForm, ConfirmDeleteForm, AuthorSearchForm
 from ugol_game.ugol_game import UgolGame
-from ugol_game.constellation_graph import CSVtoConstellationGraph
+from ugol_game.constellation_graph import csv_to_constellation_graph
 
 
 MAX_COUNT = 100
@@ -67,12 +66,7 @@ def themes_list(request):
 def theme_view(request, theme_id):
     try:
         theme_ = get_object_or_404(Theme, pk=theme_id)
-        # context = {
-        #     'theme': theme_, 'description': theme_.description, 'problems': theme_.problems
-        # }
-        # if request.method == 'POST':
         return problems_list(request, 'id', 0, theme_.problems, True)
-        # return render(request, 'problems/event.html', context)
     except OperationalError:
         pass
 
@@ -126,12 +120,7 @@ def download_problem(request, problem_id):
 def event(request, event_id):
     try:
         event_ = get_object_or_404(Event, pk=event_id)
-        # context = {
-        #     'event': event_, 'description': event_.description, 'problems': event_.problems
-        # }
-        # if request.method == 'POST':
         return problems_list(request, 'id', 0, event_.problems, True)
-        # return render(request, 'problems/event.html', context)
     except OperationalError:
         pass
 
@@ -233,11 +222,7 @@ def delete_problem(request, problem_id):
 def view_author(request, author_id):
     try:
         author = get_object_or_404(Author, pk=author_id)
-        # problems = author.problems.all()
-        # print(problems)
-        # context = {'author': author}
         return problems_list(request, 'id', 0, author.problems, True)
-        # return render(request, 'problems/author.html', context)
     except OperationalError:
         pass
 
@@ -246,9 +231,6 @@ def events_list(request):
     try:
         events_list_ = Event.objects.annotate(count=Count('problems')).order_by('-count')
         problem_count = [len(event.problems.all()) for event in events_list_]
-        # paginator = Paginator(events_list_, 20)
-        # page = request.GET.get('page')
-        # events = paginator.get_page(page)
         context = {'events': events_list_, 'problem_count': problem_count}
         return render(request, 'problems/events.html', context)
     except OperationalError:
@@ -294,12 +276,6 @@ def edit_problem(request, problem_id):
                     break
 
             authors = request.POST.get('authors')
-            # for author_id in existing_authors:
-            #     try:
-            #         author = Author.objects.get(pk=author_id)
-            #         authors = author.name + ', ' + authors
-            #     except ObjectDoesNotExist:
-            #         pass
 
             for name in authors.split(','):
                 name = name.strip()
@@ -414,7 +390,7 @@ def start_game(request):
 
 
 def create_new_game(request):
-    game = UgolGame(CSVtoConstellationGraph('ugol_game/map.csv'))
+    game = UgolGame(csv_to_constellation_graph('ugol_game/map.csv'))
     game_ = Game(current_constellation=game.currentConstellation.name,
                  target_constellation=game.targetConstellation.name,
                  path=game.currentConstellation)
